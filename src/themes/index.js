@@ -3,7 +3,7 @@ import {getCookie} from "../Cookies";
 const defaultTheme = {
     navigation : {
         panel : {
-            color : '#2b2b2b',
+            color : '#313335',
             bg_img : require('../assets/black-background.jpg'),
             title : {
                 color : '#FFFFFF',

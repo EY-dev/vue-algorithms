@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 
 const Home = () => import(/* webpackChunkName: "common" */ "@/views/Home.vue");
 const About = () => import(/* webpackChunkName: "common" */ "@/views/About.vue");
+const SortingAlgorithms = () => import(/* webpackChunkName: "common" */ "@/views/SortingAlgorithms.vue");
 
 Vue.use(VueRouter);
 
@@ -15,6 +16,11 @@ const routes = [
   {
     path: '/home',
     redirect: '/',
+  },
+  {
+    path: '/sorting-algorithms',
+    name: 'Sorting Algorithms',
+    component: SortingAlgorithms,
   },
   {
     path: '/about',

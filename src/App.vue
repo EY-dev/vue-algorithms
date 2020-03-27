@@ -6,7 +6,7 @@
       <!-- Provides the application the proper gutter -->
       <v-container fluid>
         <!-- If using vue-router -->
-        <router-view></router-view>
+        <router-view :theme_style="curStyle"></router-view>
       </v-container>
     </v-content>
     <my-footer @update-style="newStyle" :theme_style="curStyle"></my-footer>

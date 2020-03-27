@@ -50,6 +50,7 @@
                 drawer: true,
                 items: [
                     { title: 'Home', icon: 'mdi-home' },
+                    { title: 'Sorting Algorithms', icon: 'mdi-sort' },
                     { title: 'Photos', icon: 'mdi-image' },
                     { title: 'About', icon: 'mdi-help-box' },
                 ],
@@ -75,7 +76,7 @@
             },
             open(title){
                 // eslint-disable-next-line no-unused-vars
-                this.$router.push('/' + title.toLowerCase()).catch(err => {});
+                this.$router.push('/' + title.split(' ').join('-').toLowerCase()).catch(err => {});
             },
         },
         computed: {
