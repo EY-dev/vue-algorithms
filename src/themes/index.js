@@ -30,7 +30,7 @@ const defaultTheme = {
         }
     },
     app : {
-        logo : require('../assets/algorithms.png'),
+        logo : require('../../public/img/icons/algorithms.png'),
     },
 };
 
@@ -64,7 +64,7 @@ const whiteTheme = {
         }
     },
     app : {
-        logo : require('../assets/algorithms.png'),
+        logo : require('../../public/img/icons/algorithms.png'),
     },
 };
 

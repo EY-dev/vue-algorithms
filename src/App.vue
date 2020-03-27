@@ -28,12 +28,21 @@ export default {
   }),
 
   methods:{
+    async accept() {
+      this.showUpgradeUI = false;
+      await this.$workbox.messageSW({ type: "SKIP_WAITING" });
+    },
     newStyle(style){
       setCookie('theme',style,365);
       this.curStyle = getTheme(style);
     },
   },
   created() {
+    if (this.$workbox) {
+      this.$workbox.addEventListener("waiting", () => {
+        this.showUpgradeUI = true;
+      });
+    }
     this.curStyle = getTheme();
   }
 };
