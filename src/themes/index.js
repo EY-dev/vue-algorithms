@@ -1,4 +1,4 @@
-import {getCookie} from "../Cookies";
+import {getCookie, setCookie} from "../Cookies";
 
 const defaultTheme = {
     navigation : {
@@ -15,6 +15,7 @@ const defaultTheme = {
             }
         },
         link : {
+            selected_color: '#1976d2',
             text_color : '#FFFFFF'
         },
     },
@@ -26,7 +27,7 @@ const defaultTheme = {
             color : '#212121',
         },
         icon: {
-            color : '#ebebeb',
+            color : '#ffffff',
         }
     },
     app : {
@@ -49,6 +50,7 @@ const whiteTheme = {
             }
         },
         link : {
+            selected_color: '#ffd600',
             text_color : '#FFFFFF'
         },
     },
@@ -60,7 +62,7 @@ const whiteTheme = {
             color : '#E0E0E0',
         },
         icon: {
-            color : '#313335',
+            color : '#626262',
         }
     },
     app : {
@@ -78,4 +80,9 @@ export function getTheme(style = getCookie('theme')){
         theme = defaultTheme
     }
     return theme;
+}
+
+export function setTheme(style){
+    setCookie('theme',style,365);
+    return getTheme(style);
 }

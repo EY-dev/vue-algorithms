@@ -17,8 +17,7 @@
 
 import NavigationPanel from "./components/NavigationPanel";
 import MyFooter from "./components/MyFooter";
-import {getTheme} from "./themes";
-import {setCookie} from "./Cookies";
+import {getTheme, setTheme} from "./themes";
 export default {
   name: 'App',
   components: { MyFooter, NavigationPanel },
@@ -33,8 +32,7 @@ export default {
       await this.$workbox.messageSW({ type: "SKIP_WAITING" });
     },
     newStyle(style){
-      setCookie('theme',style,365);
-      this.curStyle = getTheme(style);
+      this.curStyle = setTheme(style);
     },
   },
   created() {
