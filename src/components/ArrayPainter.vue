@@ -9,8 +9,8 @@
                   :style="{'fill':getColor(index)}"
                   :class="{'colorChangeRed':(index === elements.j), 'colorChangePink':(index === elements.i)}"
                   @click="light($event.target)">
-                <animate v-if="elements.swap && index === elements.i" attributeName="x" :from="getX(index)" :to="getX(index+1)" dur="3s" repeatCount="infinite" fill="freeze"/>
-                <animate v-if="elements.swap && index === elements.j" attributeName="x" :from="getX(index)" :to="getX(index-1)" dur="3s" repeatCount="infinite" fill="freeze"/>
+                <animate v-if="elements.swap && index === elements.i" attributeName="x" :from="getX(elements.i)" :to="getX(elements.j)" :dur="speed + 's'" repeatCount="infinite" fill="freeze"/>
+                <animate v-if="elements.swap && index === elements.j" attributeName="x" :from="getX(elements.j)" :to="getX(elements.i)" :dur="speed + 's'" repeatCount="infinite" fill="freeze"/>
             </rect>
         </g>
     </svg>
@@ -20,7 +20,7 @@
 <script>
     export default {
         name: "ArrayPainter",
-        props: ['theme_style', 'arr', 'max', "elements", ],
+        props: ['theme_style', 'arr', 'max', "elements", "speed"],
         data: () => ({
             ready: false,
             line_width : 0,

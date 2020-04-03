@@ -1,10 +1,10 @@
 <template>
     <div style="margin-left: -12px; margin-right: -12px; margin-top: -12px">
-        <array-settings :theme_style="theme_style" @get-array="getRandomArray" @stop-doing="stopWorking"></array-settings>
+        <array-settings :theme_style="theme_style" @get-array="getRandomArray" @stop-doing="stopWorking" @new-speed="newSpeed"></array-settings>
         <v-row class="custom-row">
             <v-col cols="12">
                 <v-card id="canvas" :style="{'background-color' : theme_style.footer.panel.color}">
-                    <array-painter v-if="render" :theme_style="theme_style" :arr="arr" :max="max" :elements="elements" @selected-item-value="newSelectedValue"></array-painter>
+                    <array-painter v-if="render" :theme_style="theme_style" :arr="arr" :max="max" :elements="elements" :speed="Math.floor(speed/1000)" @selected-item-value="newSelectedValue"></array-painter>
                     <canvas v-else class="sort-canvas"></canvas>
                     <v-card-title style="margin-top: -64px; padding-bottom: 0; z-index: 150" :style="{'color': theme_style.navigation.panel.title.color,}">
                         <b>Current Algorithm:</b> {{currentAlgorithm.name}}
@@ -55,6 +55,8 @@
             render: false,
             stopAlgorithm: true,
             selectedValue : '',
+            speed : 3100,
+            skip : false,
             currentAlgorithm: {
                 name : '',
                 complexity : '',
@@ -71,6 +73,10 @@
                     self.render = (arr.length > 0);
                 }, 1);
             },
+            newSpeed(speed, skip){
+                this.skip = skip;
+                this.speed = speed;
+            },
             newSelectedValue(value){
                 this.selectedValue = value;
             },
@@ -78,7 +84,6 @@
                 this.stopAlgorithm = true;
             },
             renderArray(arr, i, j, swap){
-                //this.render = false;
                 const self = this;
                 setTimeout(function () {
                     self.arr = arr;
@@ -98,11 +103,15 @@
                 for (let i = 0; i < len; i++) {
                     for (let j = 0; j < len; j++) {
                         if (this.stopAlgorithm){break;}
-                        this.renderArray(inputArr, j, j + 1, false);
-                        await delay(500);
+                        if (!this.skip){
+                            this.renderArray(inputArr, j, j + 1, false);
+                            await delay(this.speed/6);
+                        }
                         if (inputArr[j] > inputArr[j + 1]) {
-                            this.renderArray(inputArr, j, j + 1, true)
-                            await delay(3100);
+                            if (!this.skip){
+                                this.renderArray(inputArr, j, j + 1, true);
+                                await delay(this.speed);
+                            }
                             let tmp = inputArr[j];
                             inputArr[j] = inputArr[j + 1];
                             inputArr[j + 1] = tmp;
