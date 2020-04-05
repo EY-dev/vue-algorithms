@@ -70,7 +70,6 @@
                 }
                 return pixels
             },
-            // eslint-disable-next-line no-unused-vars
             getColor(index){
                 let color = 'rgb(121, 82, 72)';
                 if (index === this.elements.j){
@@ -78,6 +77,9 @@
                 }
                 if (index === this.elements.i){
                     color = 'rgb(197,83,252)';
+                }
+                if (index === this.elements.k){
+                    color = 'rgb(253,93,147)';
                 }
                 return color;
             },

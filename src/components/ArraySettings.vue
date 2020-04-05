@@ -62,7 +62,7 @@
         data: () => ({
             max:100,
             arr_length : 0,//color_lens
-            speed: 0,
+            speed: 2000,
             max_speed: 4100,
         }),
         methods:{
@@ -79,7 +79,7 @@
             },
             sendSpeed(){
                 const speed = this.max_speed - this.speed - 1000;
-                let skip = (speed === 0);
+                let skip = (speed < 0);
                 this.$emit('new-speed', this.max_speed - this.speed - 1000, skip)
             },
             getMaxWidth(){

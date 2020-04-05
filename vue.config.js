@@ -3,9 +3,15 @@ module.exports = {
   "transpileDependencies": [
     "vuetify"
   ],
-  publicPath: process.env.NODE_ENV === "development" ? "/vuejs-pwa/" : "",
+  pwa: {
+    workboxOptions: {
+      debug: true,
+      cacheNamePrefix: 'customCacheName'
+    }
+  },
+  publicPath: process.env.NODE_ENV === "development" ? "/algorithms-pwa/" : "",
 
   configureWebpack: {
     plugins: [new GenerateSW()]
   }
-}
+};
