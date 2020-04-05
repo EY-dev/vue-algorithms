@@ -135,15 +135,15 @@
                 this.renderArray(inputArr, 0, 0);
                 let len = inputArr.length;
                 for (let i = 0; i < len; i++) {
-                    for (let j = 0; j < len; j++) {
+                    for (let j = 0; j < len - i; j++) {
                         if (this.stopAlgorithm){break;}
                         if (!this.skip){
-                            this.renderArray(inputArr, j, j + 1, false);
+                            this.renderArray(inputArr, j, j + 1, false, len - i);
                             await delay(this.speed/6);
                         }
                         if (inputArr[j] > inputArr[j + 1]) {
                             if (!this.skip){
-                                this.renderArray(inputArr, j, j + 1, true);
+                                this.renderArray(inputArr, j, j + 1, true, len - i);
                                 await delay(this.speed);
                             }
                             let tmp = inputArr[j];
@@ -169,7 +169,7 @@
                     for (let j = i+1; j < len; j++) {
                         if (this.stopAlgorithm){break;}
                         if (!this.skip){
-                            this.renderArray(inputArr, min, j, false, i);
+                            this.renderArray(inputArr, min, j, false, i - 1);
                             await delay(this.speed/6);
                         }
                         if (inputArr[j] < inputArr[min]) {
@@ -177,7 +177,7 @@
                         }
                     }
                     if (!this.skip){
-                        this.renderArray(inputArr, min, i, true, i);
+                        this.renderArray(inputArr, min, i, true, i - 1);
                         await delay(this.speed);
                     }
                     let t = inputArr[min]; inputArr[min] = inputArr[i]; inputArr[i] = t;
@@ -195,8 +195,6 @@
                 for (let i = 0; i < len; i++) {
                     if (this.stopAlgorithm){break;}
                     const v = inputArr[i];
-                    this.currentAlgorithm.memory = v;
-                    inputArr[i] = 0;
                     let j = i - 1;
                     if (!this.skip){
                         this.renderArray(inputArr, i, j, false, i + 1);
@@ -209,8 +207,7 @@
                             await delay(this.speed);
                         }
                         inputArr[j+1] = inputArr[j];
-                        this.currentAlgorithm.memory = inputArr[j];
-                        inputArr[j] = 0;
+                        inputArr[j] = v;
                         j--;
                     }
                     if (!this.skip){
@@ -223,31 +220,36 @@
                 this.renderArray(inputArr, -1, -1);
                 return inputArr;
             },
+
             async quickSortPrep(inputArr){
                 this.stopAlgorithm = false;
                 this.currentAlgorithm.name = 'Quick Sort';
                 this.currentAlgorithm.complexity = 'n * log(n)';
                 this.renderArray(inputArr, 0, 0);
-                this.quickSort(inputArr, 0, inputArr.length);
-                inputArr = inputArr.concat();
-                this.renderArray(inputArr.concat(), -1, -1);
+                await this.quickSort(inputArr, 0, inputArr.length - 1);
+                this.renderArray(inputArr, -1, -1);
             },
             async quickSort(arr, start, end){
+                if (this.stopAlgorithm){return;}
                 if(start < end) {
                     let pivot = await this.partition(arr, start, end);
-                    this.quickSort(arr, start, pivot - 1).then(()=>{
-                        this.quickSort(arr, pivot + 1, end)
-                    });
+                    await this.quickSort(arr, start, pivot - 1);
+                    await this.quickSort(arr, pivot + 1, end);
                 }
                 this.renderArray(arr, -1, -1);
             },
 
             async partition (arr, start, end){
+                if (this.stopAlgorithm){return;}
                 let pivot = end;
                 let i = start - 1;
                 let j = start;
                 while (j < pivot) {
-                    if (arr[j] <= arr[pivot]) {
+                    if (!this.skip){
+                        this.renderArray(arr, i + 1, j, false, pivot);
+                        await delay(this.speed/6);
+                    }
+                    if (arr[j] < arr[pivot]) {
                         i++;
                         await this.swap(arr, j, i, pivot);
                     }
@@ -257,8 +259,9 @@
                 return i + 1
             },
             async swap(arr, firstIndex, secondIndex, pivot = -1) {
+                if (this.stopAlgorithm){return;}
                 if (!this.skip && firstIndex !== secondIndex){
-                    this.renderArray(arr, firstIndex, secondIndex, true, pivot);
+                    this.renderArray(arr, secondIndex, firstIndex, true, pivot);
                     await delay(this.speed);
                 }
                 let temp = arr[firstIndex];
