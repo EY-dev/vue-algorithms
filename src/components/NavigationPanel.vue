@@ -6,7 +6,7 @@
             :mini-variant="miniVariant"
             :right="right"
             mobile-break-point="600"
-            absolute
+
             dark>
         <v-img :aspect-ratio="16/9" :src="theme_style.navigation.panel.bg_img" style="margin-bottom: 5px">
             <v-list dense nav class="py-0">

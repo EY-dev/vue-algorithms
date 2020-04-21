@@ -16,8 +16,8 @@
                                     <div>Complexity of the algorithm:
                                         <code style="font-size: 16px;"
                                               :style="{
-                                'background-color': theme_style.navigation.panel.color,
-                                'color':theme_style.navigation.link.selected_color}">
+                                                        'background-color': theme_style.navigation.panel.color,
+                                                        'color':theme_style.navigation.link.selected_color}">
                                             {{currentAlgorithm.complexity}}
                                         </code>
                                     </div>
@@ -37,8 +37,8 @@
                                     <div>Value in memory:
                                         <code style="font-size: 16px;"
                                               :style="{
-                                'background-color': theme_style.navigation.panel.color,
-                                'color':theme_style.navigation.link.selected_color}">
+                                                        'background-color': theme_style.navigation.panel.color,
+                                                        'color':theme_style.navigation.link.selected_color}">
                                             {{currentAlgorithm.memory}}
                                         </code>
                                     </div>
@@ -52,17 +52,8 @@
         <v-row class="custom-row">
             <v-col cols="12">
                <v-row>
-                   <v-col cols="12" sm="4" lg="3">
-                       <v-btn  tile block large color="warning" @click="bubbleSort(arr)" >Bubble Sort</v-btn>
-                   </v-col>
-                   <v-col cols="12" sm="4" lg="3">
-                       <v-btn  tile block large color="warning" @click="selectionSort(arr)" >Selection Sort</v-btn>
-                   </v-col>
-                   <v-col cols="12" sm="4" lg="3">
-                       <v-btn  tile block large color="warning" @click="insertionSort(arr)" >Insertion Sort</v-btn>
-                   </v-col>
-                   <v-col cols="12" sm="4" lg="3">
-                       <v-btn  tile block large color="warning" @click="quickSortPrep(arr)" >Quick Sort</v-btn>
+                   <v-col cols="12" sm="4" lg="3" v-for="(item, index) in sortingAlgorithms" :key="'btn_' + index">
+                       <v-btn  tile block large color="warning" @click="runSort(item)">{{item.name}}</v-btn>
                    </v-col>
                </v-row>
             </v-col>
@@ -93,7 +84,8 @@
                 complexity : '',
                 memory: '',
             },
-            elements: {i : -1, j : -1, k: -1, swap : false,},
+            sortingAlgorithms : [],
+            elements: {i : -1, j : -1, k: -1, swap : false},
         }),
         methods:{
             getRandomArray(arr, max){
@@ -128,11 +120,15 @@
                 }, 1);
             },
 
-            async bubbleSort(inputArr){
+            runSort(algorithm){
                 this.stopAlgorithm = false;
-                this.currentAlgorithm.name = 'Bubble Sort';
-                this.currentAlgorithm.complexity = 'O(n^2)';
-                this.renderArray(inputArr, 0, 0);
+                this.currentAlgorithm.name = algorithm.name;
+                this.currentAlgorithm.complexity = algorithm.complexity;
+                this.renderArray(this.arr, -1, -1);
+                algorithm.runAlgorithm();
+            },
+
+            async bubbleSort(inputArr){
                 let len = inputArr.length;
                 for (let i = 0; i < len; i++) {
                     for (let j = 0; j < len - i; j++) {
@@ -142,13 +138,7 @@
                             await delay(this.speed/6);
                         }
                         if (inputArr[j] > inputArr[j + 1]) {
-                            if (!this.skip){
-                                this.renderArray(inputArr, j, j + 1, true, len - i);
-                                await delay(this.speed);
-                            }
-                            let tmp = inputArr[j];
-                            inputArr[j] = inputArr[j + 1];
-                            inputArr[j + 1] = tmp;
+                            await this.swap(inputArr, j + 1, j, len - i)
                         }
                     }
                     if (this.stopAlgorithm){break;}
@@ -157,6 +147,74 @@
                 this.renderArray(inputArr, -1, -1);
                 return inputArr;
             },
+            async cocktailSort(inputArr){
+                let i = 0;
+                let j = inputArr.length-1;
+                let s = true;
+                while (i < j && s){
+                    if (this.stopAlgorithm){break;}
+                    s = false;
+                    for (let k = i; k < j; k++){
+                        if (this.stopAlgorithm){break;}
+                        if (!this.skip){
+                            this.renderArray(inputArr, k, k + 1, false, j + 1);
+                            await delay(this.speed/6);
+                        }
+                        if (inputArr[k] > inputArr[k+1]){
+                            await this.swap(inputArr,k ,k + 1, j + 1);
+                            s = true;
+                        }
+                    }
+                    j--;
+                    if (s) {
+                        s = false;
+                        for (let k = j; k > i; k--){
+                            if (this.stopAlgorithm){break;}
+                            if (!this.skip){
+                                this.renderArray(inputArr, k, k - 1, false, j + 1);
+                                await delay(this.speed/6);
+                            }
+                            if (inputArr[k] < inputArr[k-1]){
+                                await this.swap(inputArr, k,k - 1, j + 1);
+                                s = true;
+                            }
+                        }
+                    }
+                    i++;
+                }
+                inputArr = inputArr.concat();
+                this.renderArray(inputArr, -1, -1);
+                return inputArr;
+            },
+            async combSort(inputArr) {
+                const getGap = (gap) =>{
+                    gap /= 1.3;
+                    if (gap === 9 || gap === 10) gap = 11;
+                    if (gap < 1) return 1;
+                    return gap;
+                };
+                let len = inputArr.length, gap = len, swapped;
+                do {
+                    if (this.stopAlgorithm){break;}
+                    swapped = false;
+                    gap = Math.floor(getGap(gap));
+                    for (let i = 0; i < len - gap; i++) {
+                        if (this.stopAlgorithm){break;}
+                        if (!this.skip){
+                            this.renderArray(inputArr, i + gap, i, false,);
+                            await delay(this.speed/6);
+                        }
+                        if (inputArr[i] > inputArr[i + gap]) {
+                            swapped = true;
+                            await this.swap(inputArr,i, i + gap, );
+                        }
+                    }
+                } while (gap > 1 || swapped);
+                inputArr = inputArr.concat();
+                this.renderArray(inputArr, -1, -1);
+                return inputArr;
+            },
+
             async selectionSort(inputArr) {
                 this.stopAlgorithm = false;
                 this.currentAlgorithm.name = 'Selection Sort';
@@ -186,6 +244,7 @@
                 this.renderArray(inputArr, -1, -1);
                 return inputArr;
             },
+
             async insertionSort(inputArr) {
                 this.stopAlgorithm = false;
                 this.currentAlgorithm.name = 'Insertion Sort';
@@ -195,6 +254,7 @@
                 for (let i = 0; i < len; i++) {
                     if (this.stopAlgorithm){break;}
                     const v = inputArr[i];
+                    inputArr[i] = 0;
                     let j = i - 1;
                     if (!this.skip){
                         this.renderArray(inputArr, i, j, false, i + 1);
@@ -207,7 +267,7 @@
                             await delay(this.speed);
                         }
                         inputArr[j+1] = inputArr[j];
-                        inputArr[j] = v;
+                        inputArr[j] = 0;
                         j--;
                     }
                     if (!this.skip){
@@ -220,44 +280,64 @@
                 this.renderArray(inputArr, -1, -1);
                 return inputArr;
             },
-
-            async quickSortPrep(inputArr){
-                this.stopAlgorithm = false;
-                this.currentAlgorithm.name = 'Quick Sort';
-                this.currentAlgorithm.complexity = 'n * log(n)';
+            async gnomeSort(inputArr) {
                 this.renderArray(inputArr, 0, 0);
-                await this.quickSort(inputArr, 0, inputArr.length - 1);
+                const len = inputArr.length;
+                let i = 1, j = 2;
+                while (i < len) {
+                    if (this.stopAlgorithm){break;}
+                    if (inputArr[i-1] < inputArr[i]){
+                        i = j;
+                        j++;
+                    }
+                    else {
+                        await this.swap(inputArr,i ,i - 1, );
+                        i--;
+                        if (i === 0){
+                            i = j;
+                            j++;
+                        }
+                    }
+                }
+                inputArr = inputArr.concat();
+                this.renderArray(inputArr, -1, -1);
+                return inputArr;
+            },
+
+            async quickSort(inputArr){
+                const quickSort = async (arr, start, end) => {
+                    const partition = async (arr, start, end) => {
+                        if (this.stopAlgorithm){return;}
+                        let pivot = end;
+                        let i = start - 1;
+                        let j = start;
+                        while (j < pivot) {
+                            if (!this.skip){
+                                this.renderArray(arr, i + 1, j, false, pivot);
+                                await delay(this.speed/6);
+                            }
+                            if (arr[j] < arr[pivot]) {
+                                i++;
+                                await this.swap(arr, j, i, pivot);
+                            }
+                            j++;
+                        }
+                        await this.swap(arr, i + 1, pivot);
+                        return i + 1
+                    };
+                    if (this.stopAlgorithm) {return;}
+                    if (start < end) {
+                        let pivot = await partition(arr, start, end);
+                        await quickSort(arr, start, pivot - 1);
+                        await quickSort(arr, pivot + 1, end);
+                    }
+                    this.renderArray(arr, -1, -1);
+                };
+                await quickSort(inputArr, 0, inputArr.length - 1);
+                inputArr = inputArr.concat();
                 this.renderArray(inputArr, -1, -1);
             },
-            async quickSort(arr, start, end){
-                if (this.stopAlgorithm){return;}
-                if(start < end) {
-                    let pivot = await this.partition(arr, start, end);
-                    await this.quickSort(arr, start, pivot - 1);
-                    await this.quickSort(arr, pivot + 1, end);
-                }
-                this.renderArray(arr, -1, -1);
-            },
 
-            async partition (arr, start, end){
-                if (this.stopAlgorithm){return;}
-                let pivot = end;
-                let i = start - 1;
-                let j = start;
-                while (j < pivot) {
-                    if (!this.skip){
-                        this.renderArray(arr, i + 1, j, false, pivot);
-                        await delay(this.speed/6);
-                    }
-                    if (arr[j] < arr[pivot]) {
-                        i++;
-                        await this.swap(arr, j, i, pivot);
-                    }
-                    j++;
-                }
-                await this.swap(arr, i + 1, pivot);
-                return i + 1
-            },
             async swap(arr, firstIndex, secondIndex, pivot = -1) {
                 if (this.stopAlgorithm){return;}
                 if (!this.skip && firstIndex !== secondIndex){
@@ -269,6 +349,17 @@
                 arr[secondIndex] = temp;
             }
         },
+        mounted() {
+            this.sortingAlgorithms = [
+                {name: "Bubble Sort",    complexity: "O(n^2)",     runAlgorithm: async () => {await this.bubbleSort(this.arr)}},
+                {name: "Selection Sort", complexity: "O(n^2)",     runAlgorithm: async () => {await this.selectionSort(this.arr)}},
+                {name: "Insertion Sort", complexity: "O(n^2)",     runAlgorithm: async () => {await this.insertionSort(this.arr)}},
+                {name: "Quick Sort",     complexity: "n * log(n)", runAlgorithm: async () => {await this.quickSort(this.arr)}},
+                {name: "Cocktail Sort",  complexity: "O(n^2)",     runAlgorithm: async () => {await this.cocktailSort(this.arr)}},
+                {name: "Gnome Sort",     complexity: "O(n^2)",     runAlgorithm: async () => {await this.gnomeSort(this.arr)}},
+                {name: "Comb Sort",      complexity: "O(n^2)",     runAlgorithm: async () => {await this.combSort(this.arr)}},
+            ];
+        }
     }
 </script>
 

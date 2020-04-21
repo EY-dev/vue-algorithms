@@ -1,6 +1,6 @@
 <template>
     <v-footer app
-              absolute
+
               dark
               :color="theme_style.footer.panel.color">
         <v-card style="background-color: inherit;"
