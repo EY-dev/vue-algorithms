@@ -11,8 +11,8 @@
           <h2 :style="{'color': theme_style.navigation.panel.subtitle.color}" class="font-italic">"This single page application was developed as <span style="color: #ffd600">a home project</span> for <span style="color: indianred">SP20 CIS295-OL 79347</span> - Web Application Development"</h2>
         </v-col>
       </v-row>
-      <v-row>
-        <v-col cols="12">
+      <v-row justify="center">
+        <v-col cols="12" sm="6">
           <code :style="{'background-color': theme_style.navigation.panel.title.color, 'color': theme_style.navigation.link.selected_color, 'font-size': fontCodeSize}" style="padding: 10px">&#60;school&#62;<br>
             &#60;school-name&#62;<span class="font-italic font-weight-light" :style="{'color': theme_style.footer.panel.color}">Chemeketa Community College</span>&#60;/school-name&#62;<br>
             &#60;class&#62;<br>
