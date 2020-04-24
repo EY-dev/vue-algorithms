@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 const Home = () => import(/* webpackChunkName: "common" */ "@/views/Home.vue");
+const Login = () => import(/* webpackChunkName: "common" */ "@/views/LogIn.vue");
+const FAQ = () => import(/* webpackChunkName: "common" */ "@/views/FAQ.vue");
 const About = () => import(/* webpackChunkName: "common" */ "@/views/About.vue");
 const SortingAlgorithms = () => import(/* webpackChunkName: "common" */ "@/views/SortingAlgorithms.vue");
 
@@ -26,6 +28,16 @@ const routes = [
     path: '/about',
     name: 'About',
     component: About
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/faq',
+    name: 'FAQ',
+    component: FAQ
   }
 ];
 

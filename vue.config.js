@@ -9,7 +9,7 @@ module.exports = {
       cacheNamePrefix: 'customCacheName'
     }
   },
-  publicPath: process.env.NODE_ENV === "development" ? "/algorithms-pwa/" : "",
+  publicPath: process.env.NODE_ENV === "development" ? "/algorithms-pwa/" : "/students/eesaulov/",
 
   configureWebpack: {
     plugins: [new GenerateSW()]

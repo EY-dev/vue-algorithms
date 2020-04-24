@@ -51,8 +51,9 @@
                 items: [
                     { title: 'Home', icon: 'mdi-home', color: this.theme_style.navigation.link.text_color },
                     { title: 'Sorting Algorithms', icon: 'mdi-sort', color: this.theme_style.navigation.link.text_color },
-                    { title: 'Photos', icon: 'mdi-image', color: this.theme_style.navigation.link.text_color },
-                    { title: 'About', icon: 'mdi-help-box', color: this.theme_style.navigation.link.text_color },
+                    { title: 'FAQ', icon: 'live_help', color: this.theme_style.navigation.link.text_color },
+                    { title: 'About', icon: 'info', color: this.theme_style.navigation.link.text_color },
+                    { title: 'Login', icon: 'face', color: this.theme_style.navigation.link.text_color },
                 ],
                 right: false,
                 miniVariant: false,
@@ -111,6 +112,6 @@
     .avatar-style{
         margin-left: -10px !important;
         background-color: #eeeeee;
-        box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;
+        box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;
     }
 </style>

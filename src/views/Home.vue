@@ -12,17 +12,8 @@
         </v-col>
       </v-row>
       <v-row justify="center">
-        <v-col cols="12" sm="6">
-          <code :style="{'background-color': theme_style.navigation.panel.title.color, 'color': theme_style.navigation.link.selected_color, 'font-size': fontCodeSize}" style="padding: 10px">&#60;school&#62;<br>
-            &#60;school-name&#62;<span class="font-italic font-weight-light" :style="{'color': theme_style.footer.panel.color}">Chemeketa Community College</span>&#60;/school-name&#62;<br>
-            &#60;class&#62;<br>
-            &#60;class-code&#62;<span class="font-italic font-weight-light" :style="{'color': theme_style.footer.panel.color}">CIS295</span>&#60;/class-code&#62;<br>
-            &#60;class-name&#62;<span class="font-italic font-weight-light" :style="{'color': theme_style.footer.panel.color}">Web Application Development</span>&#60;/class-name&#62;<br>
-            &#60;instructor-name&#62;<span class="font-italic font-weight-light" :style="{'color': theme_style.footer.panel.color}">Don Kraus</span>&#60;/instructor-name&#62;<br>
-            &#60;/class&#62;<br>
-            &#60;student-name&#62;<span class="font-italic font-weight-light" :style="{'color': theme_style.footer.panel.color}">Evgenii Eugene Esaulov</span>&#60;/student-name&#62;<br>
-            &#60;/school&#62;
-          </code>
+        <v-col cols="12" sm="10" md="8" lg="6">
+          <school-info :theme="theme_style"></school-info>
         </v-col>
       </v-row>
     </v-container>
@@ -32,24 +23,11 @@
 <script>
 // @ is an alias to /src
 
+import SchoolInfo from "../components/SchoolInfo";
 export default {
   name: 'Home',
+  components: {SchoolInfo},
   props :['theme_style'],
-  data: () => ({
-    fontCodeSize: '18px',
-  }),
-  methods:{
-    onResize () {
-      if (this.$vuetify.breakpoint.xs){
-        this.fontCodeSize = "10px";
-      }
-    },
-  },
-  created() {
-    if (this.$vuetify.breakpoint.xs){
-      this.fontCodeSize = "10px";
-    }
-  },
 }
 </script>
 
