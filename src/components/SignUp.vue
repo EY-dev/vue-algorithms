@@ -40,7 +40,7 @@
                     </v-icon>
                 </v-text-field>
                 <v-text-field
-                        id="password"
+                        id="second-password"
                         label="confirm password"
                         name="password"
                         prepend-icon="lock"
