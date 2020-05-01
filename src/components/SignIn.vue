@@ -29,7 +29,7 @@
                 </v-text-field>
                 <v-row>
                     <v-col cols="12" sm="6" md="4">
-                        <v-btn color="warning" block @click="signUp()">SignUp</v-btn>
+                        <v-btn color="warning" block @click="signUp()">Join Us</v-btn>
                     </v-col>
                     <v-col md="4">
                     </v-col>
