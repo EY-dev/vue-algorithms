@@ -42,6 +42,8 @@
 </template>
 
 <script>
+    import {getCookie} from "../Cookies";
+
     export default {
         name: "NavigationPanel",
         props: ['theme_style'],
@@ -53,7 +55,7 @@
                     { title: 'Sorting Algorithms', icon: 'mdi-sort', color: this.theme_style.navigation.link.text_color },
                     { title: 'FAQ', icon: 'live_help', color: this.theme_style.navigation.link.text_color },
                     { title: 'About', icon: 'info', color: this.theme_style.navigation.link.text_color },
-                    { title: 'Login', icon: 'face', color: this.theme_style.navigation.link.text_color },
+                    { title: 'LogIn', icon: 'face', color: this.theme_style.navigation.link.text_color },
                 ],
                 right: false,
                 miniVariant: false,
@@ -79,6 +81,9 @@
                     this.miniVariant = false;
                     this.expandOnHover = false;
                 }
+            },
+            getPageName(){
+                return (getCookie('Authentication') === 'Success') ? 'My Account' : 'LogIn';
             },
             open(selIndex){
                 for(let index in this.items){

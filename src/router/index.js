@@ -6,8 +6,30 @@ const Login = () => import(/* webpackChunkName: "common" */ "@/views/LogIn.vue")
 const FAQ = () => import(/* webpackChunkName: "common" */ "@/views/FAQ.vue");
 const About = () => import(/* webpackChunkName: "common" */ "@/views/About.vue");
 const SortingAlgorithms = () => import(/* webpackChunkName: "common" */ "@/views/SortingAlgorithms.vue");
+const MyAccount = () => import(/* webpackChunkName: "common" */ "@/views/MyAccount.vue");
+
+import { getCookie } from "../Cookies/index";
+
+function guard(to, from, next){
+  if (getCookie('Authentication') !== 'Success'){
+    if (to.path === '/login'){
+      next();
+    } else{
+      next('/login');
+    }
+  }
+  else{
+    if (to.path === '/my-account'){
+      next();
+    } else{
+      next('/my-account');
+    }
+  }
+}
 
 Vue.use(VueRouter);
+
+
 
 const routes = [
   {
@@ -30,6 +52,7 @@ const routes = [
     component: About
   },
   {
+    beforeEnter: guard,
     path: '/login',
     name: 'Login',
     component: Login
@@ -38,6 +61,12 @@ const routes = [
     path: '/faq',
     name: 'FAQ',
     component: FAQ
+  },
+  {
+    beforeEnter: guard,
+    path: '/my-account',
+    name: 'My Account',
+    component: MyAccount
   }
 ];
 

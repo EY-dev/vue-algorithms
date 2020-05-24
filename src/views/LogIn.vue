@@ -3,7 +3,7 @@
         <v-container fluid fill-height>
             <v-layout align-center justify-center>
                 <v-flex xs12 sm8 md4>
-                    <sign-in v-if="login_mode" :theme="theme_style" @sign-up="signUp" @submit="send"></sign-in>
+                    <sign-in v-if="login_mode" :theme="theme_style" :error="error" @clear-error="error=''" @sign-up="signUp" @submit="send"></sign-in>
                     <sign-up v-else :theme="theme_style" @sign-in="signIn" @submit="send"></sign-up>
                 </v-flex>
             </v-layout>
@@ -14,6 +14,7 @@
 <script>
     import SignIn from "../components/SignIn";
     import SignUp from "../components/SignUp";
+    import {setCookie} from "../Cookies/index";
     export default {
         name: "LogIn",
         props:['theme_style'],
@@ -21,6 +22,7 @@
         data: () => ({
             login_mode: true,
             form: {},
+            error: '',
         }),
         methods:{
             signUp(){
@@ -30,7 +32,25 @@
                 this.login_mode = true;
             },
             send(form){
-                console.log(form);
+                fetch('http://cisweb.chemeketa.edu/student/eesaulov/api.php?method=authorize', {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json'
+                        // 'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: JSON.stringify({data : form})
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        this.error = (data.error !== "") ? data.error : "";
+                        if (this.error === ''){
+                            setCookie('Authentication','Success',1);
+                            this.$router.push('/my-account');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
             },
         },
     }

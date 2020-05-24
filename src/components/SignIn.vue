@@ -11,6 +11,7 @@
                         prepend-icon="person"
                         type="text"
                         v-model="form.login"
+                        @keyup="clearError()"
                 >
                     <v-icon slot="prepend" :color="theme.navigation.panel.title.color">
                         person
@@ -22,18 +23,23 @@
                         prepend-icon="lock"
                         type="password"
                         v-model="form.pwd"
+                        @keyup="clearError()"
                 >
                     <v-icon slot="prepend" :color="theme.navigation.panel.title.color">
                         lock
                     </v-icon>
                 </v-text-field>
                 <v-row>
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="12">
+                        <p style = "text-align: center; color: indianred" >{{error}}</p>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col cols="12" sm="4" md="4" align-self="start">
                         <v-btn color="warning" block @click="signUp()">Join Us</v-btn>
                     </v-col>
-                    <v-col md="4">
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col sm="4" md="4"></v-col>
+                    <v-col cols="12" sm="4" md="4" align-self="end">
                         <v-btn color="success" block @click="submit()">Login</v-btn>
                     </v-col>
                 </v-row>
@@ -45,7 +51,7 @@
 <script>
     export default {
         name: "SignIn",
-        props: ['theme'],
+        props: ['theme', 'error'],
         data: () => ({
             form: {login : "", pwd : ""},
         }),
@@ -56,6 +62,9 @@
             submit(){
                 this.$emit('submit', this.form);
             },
+            clearError(){
+                this.$emit('clear-error');
+            }
         },
     }
 </script>
