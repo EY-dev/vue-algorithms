@@ -45,6 +45,22 @@
                     </v-list-item-content>
                 </v-row>
             </v-list-item>
+            <v-list-item link v-if="auth > 0">
+                <v-row @click="openNews()">
+                    <v-list-item-icon ><v-icon :color="localColors.news">fiber_new</v-icon></v-list-item-icon >
+                    <v-list-item-content>
+                        <v-list-item-title><label :style="{'color':localColors.news}">Insider News</label></v-list-item-title>
+                    </v-list-item-content>
+                </v-row>
+            </v-list-item>
+            <v-list-item link v-if="auth === 5">
+                <v-row @click="openAdmin()">
+                    <v-list-item-icon ><v-icon :color="localColors.admin">settings</v-icon></v-list-item-icon >
+                    <v-list-item-content>
+                        <v-list-item-title><label :style="{'color':localColors.admin}">Administration</label></v-list-item-title>
+                    </v-list-item-content>
+                </v-row>
+            </v-list-item>
         </v-list>
     </v-navigation-drawer>
 </template>
@@ -72,11 +88,11 @@
                 expandOnHover: false,
                 background: false,
                 currentPage : '',
+                localColors: {news:this.theme_style.navigation.link.text_color, admin: this.theme_style.navigation.link.text_color}
             }
         },
         mounted () {
             this.onResize();
-            if (this.auth > 0 ) {this.addElements();}
         },
         created() {
             const pages = window.location.pathname;
@@ -112,11 +128,29 @@
                 }
             },
             open(selIndex){
+                this.localColors.news = this.theme_style.navigation.link.text_color;
+                this.localColors.admin = this.theme_style.navigation.link.text_color;
                 for(let index in this.items){
                     this.items[index].color = (selIndex === parseInt(index)) ? this.theme_style.navigation.link.selected_color : this.theme_style.navigation.link.text_color;
                 }
                 // eslint-disable-next-line no-unused-vars
                 this.$router.push('/' + this.items[selIndex].title.split(' ').join('-').toLowerCase()).catch(err => {});
+            },
+            openNews(){
+                for(let index in this.items){
+                    this.items[index].color = this.theme_style.navigation.link.text_color;
+                }
+                this.localColors.news = this.theme_style.navigation.link.selected_color;
+                this.localColors.admin = this.theme_style.navigation.link.text_color;
+                this.$router.push('/insider-news');
+            },
+            openAdmin(){
+                for(let index in this.items){
+                    this.items[index].color = this.theme_style.navigation.link.text_color;
+                }
+                this.localColors.admin = this.theme_style.navigation.link.selected_color;
+                this.localColors.news = this.theme_style.navigation.link.text_color;
+                this.$router.push('/administration');
             },
             getIndexCurrentPage(url){
                 const pages = url.split('/');
@@ -132,9 +166,6 @@
                         this.open(0);
                     }
                 });
-            },
-            addElements(){
-                console.log('some')
             },
         },
         computed: {
