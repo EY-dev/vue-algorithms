@@ -11,19 +11,11 @@ const MyAccount = () => import(/* webpackChunkName: "common" */ "@/views/MyAccou
 import { getCookie } from "../Cookies/index";
 
 function guard(to, from, next){
-  if (getCookie('Authentication') !== 'Success'){
-    if (to.path === '/login'){
-      next();
-    } else{
-      next('/login');
-    }
+  if (getCookie('Authentication') === 'Success' && (to.path === '/login')){
+    next('/');
   }
   else{
-    if (to.path === '/my-account'){
-      next();
-    } else{
-      next('/my-account');
-    }
+    next();
   }
 }
 

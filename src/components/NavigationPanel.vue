@@ -28,12 +28,20 @@
         </v-img>
         <v-list dense nav class="py-0">
             <v-list-item v-for="(item, index) in items" :key="item.title" link>
-                <v-row @click="open(index)">
+                <v-row @click="open(index)" v-if="auth === 0 || item.title!=='LogIn'">
                     <v-list-item-icon >
                         <v-icon :color="item.color">{{ item.icon }}</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
                         <v-list-item-title><label :style="{'color':item.color}">{{ item.title }}</label></v-list-item-title>
+                    </v-list-item-content>
+                </v-row>
+                <v-row v-else @click="logOut()">
+                    <v-list-item-icon >
+                        <v-icon :color="theme_style.navigation.link.text_color">face</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title><label :style="{'color':theme_style.navigation.link.text_color}">LogOut</label></v-list-item-title>
                     </v-list-item-content>
                 </v-row>
             </v-list-item>
@@ -42,11 +50,11 @@
 </template>
 
 <script>
-    import {getCookie} from "../Cookies";
+    import {setCookie} from "../Cookies";
 
     export default {
         name: "NavigationPanel",
-        props: ['theme_style'],
+        props: ['theme_style','auth'],
         data () {
             return {
                 drawer: true,
@@ -55,6 +63,8 @@
                     { title: 'Sorting Algorithms', icon: 'mdi-sort', color: this.theme_style.navigation.link.text_color },
                     { title: 'FAQ', icon: 'live_help', color: this.theme_style.navigation.link.text_color },
                     { title: 'About', icon: 'info', color: this.theme_style.navigation.link.text_color },
+                    //{ title: 'News', icon: 'info', color: this.theme_style.navigation.link.text_color },
+                    //{ title: 'Administration Page', icon: 'info', color: this.theme_style.navigation.link.text_color },
                     { title: 'LogIn', icon: 'face', color: this.theme_style.navigation.link.text_color },
                 ],
                 right: false,
@@ -66,12 +76,31 @@
         },
         mounted () {
             this.onResize();
+            if (this.auth > 0 ) {this.addElements();}
         },
         created() {
             const pages = window.location.pathname;
             this.getIndexCurrentPage(pages);
         },
         methods: {
+            logOut(){
+                const headers = { 'Content-Type': 'application/json' };
+                fetch('http://cisweb.chemeketa.edu/student/eesaulov/api.php?method=logout', { headers })
+                    .then(response => response.json())
+                    .then(data => {
+                        this.error = (data.error !== "") ? data.error : "";
+                        if (this.error === ''){
+                            setCookie('Authentication','Failed',1);
+                            setCookie('login', 'web-user', 1);
+                            setCookie('auth', 0, 1);
+                            this.$emit('new-auth', 0);
+                            this.open(4);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            },
             onResize () {
                 if (this.$vuetify.breakpoint.sm) {
                     this.miniVariant = true;
@@ -81,9 +110,6 @@
                     this.miniVariant = false;
                     this.expandOnHover = false;
                 }
-            },
-            getPageName(){
-                return (getCookie('Authentication') === 'Success') ? 'My Account' : 'LogIn';
             },
             open(selIndex){
                 for(let index in this.items){
@@ -106,6 +132,9 @@
                         this.open(0);
                     }
                 });
+            },
+            addElements(){
+                console.log('some')
             },
         },
         computed: {
