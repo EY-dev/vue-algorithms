@@ -56,27 +56,6 @@
                         console.error('Error:', error);
                     });
             },
-            async getUser(){
-                const headers = { 'Content-Type': 'application/json' };
-                fetch('http://cisweb.chemeketa.edu/student/eesaulov/api.php?method=get-user', { headers })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.error === ""){
-                            setCookie('login', data.result.username, 1);
-                            setCookie('auth', data.result.auth, 1);
-                            this.auth = parseInt(data.result.auth);
-
-                        }
-                        else{
-                            setCookie('Authentication','Failed',1);
-                            setCookie('login', 'web-user', 1);
-                            setCookie('auth', 0, 1);
-                        }
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
-            },
         },
     }
 </script>

@@ -3,7 +3,7 @@
     <v-container>
       <v-row class="text-center">
         <v-col cols="12">
-          <h1 :style="{'color': theme_style.navigation.panel.title.color}">Welcome {{getLogIn()}} to demo of algorithms</h1>
+          <h1 :style="{'color': theme_style.navigation.panel.title.color}">Welcome <span style="color: indianred">{{getLogIn()}}</span> to demo of algorithms</h1>
         </v-col>
       </v-row>
       <v-row class="text-center">
