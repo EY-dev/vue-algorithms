@@ -18,7 +18,7 @@
 import NavigationPanel from "./components/NavigationPanel";
 import MyFooter from "./components/MyFooter";
 import {getTheme, setTheme} from "./themes";
-import {setCookie} from "./Cookies";
+import {getCookie, setCookie} from "./Cookies";
 export default {
   name: 'App',
   components: { MyFooter, NavigationPanel },
@@ -51,9 +51,12 @@ export default {
                   this.auth = parseInt(data.result.auth)
                 }
                 else{
-                  setCookie('Authentication','Failed',1);
-                  setCookie('login', 'web-user', 1);
-                  setCookie('auth', 0, 1);
+                  if (getCookie('Authentication') !== 'Success'){
+                    setCookie('Authentication','Failed',1);
+                    setCookie('login', 'web-user', 1);
+                    setCookie('auth', 0, 1);
+                    this.newAuth(0);
+                  }
                 }
               })
               .catch((error) => {
