@@ -45,7 +45,7 @@
                     </v-list-item-content>
                 </v-row>
             </v-list-item>
-            <v-list-item link v-if="auth > 0">
+            <v-list-item link v-if="auth > 0 && getNews()">
                 <v-row @click="openNews()">
                     <v-list-item-icon ><v-icon :color="localColors.news">fiber_new</v-icon></v-list-item-icon >
                     <v-list-item-content>
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-    import {setCookie} from "../Cookies";
+    import {getCookie, setCookie} from "../Cookies";
 
     export default {
         name: "NavigationPanel",
@@ -109,6 +109,8 @@
                             setCookie('Authentication','Failed',1);
                             setCookie('login', 'web-user', 1);
                             setCookie('auth', 0, 1);
+                            setCookie('news', 'No', 1);
+                            setCookie('email', '', 1);
                             this.$emit('new-auth', 0);
                             this.open(4);
                         }
@@ -151,6 +153,11 @@
                 this.localColors.admin = this.theme_style.navigation.link.selected_color;
                 this.localColors.news = this.theme_style.navigation.link.text_color;
                 this.$router.push('/administration');
+            },
+            getNews(){
+                let value = getCookie('news');
+                if (value === "Yes") return true;
+                else return false;
             },
             getIndexCurrentPage(url){
                 const pages = url.split('/');

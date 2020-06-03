@@ -56,6 +56,10 @@
                         email
                     </v-icon>
                 </v-text-field>
+                <v-checkbox
+                        v-model="form.news"
+                        label="Yes, I would like to be informed of site updates via an occasional newsletter."
+                ></v-checkbox>
                 <v-row>
                     <v-col cols="12">
                         <p style = "text-align: center; color: indianred" >{{error}}</p>
@@ -79,10 +83,9 @@
 <script>
     export default {
         name: "SignIn",
-        props: ['theme'],
+        props: ['theme', 'error'],
         data: () => ({
-            form: {email: "", login : "", pwd : "", secPwd: ""},
-            error: "",
+            form: {email: "", login : "", pwd : "", secPwd: "", news : false},
             // eslint-disable-next-line no-useless-escape
             reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
         }),

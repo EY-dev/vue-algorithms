@@ -48,12 +48,16 @@ export default {
                   setCookie('Authentication','Success',1);
                   setCookie('login', data.result.username, 1);
                   setCookie('auth', data.result.auth, 1);
+                  setCookie('news', data.result.news, 1);
+                  setCookie('email', data.result.email, 1);
                   this.auth = parseInt(data.result.auth)
                 }
                 else{
                   if (getCookie('Authentication') !== 'Success'){
                     setCookie('Authentication','Failed',1);
                     setCookie('login', 'web-user', 1);
+                    setCookie('news', 'No', 1);
+                    setCookie('email', '', 1);
                     setCookie('auth', 0, 1);
                     this.newAuth(0);
                   }
