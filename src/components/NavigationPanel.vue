@@ -6,7 +6,6 @@
             :mini-variant="miniVariant"
             :right="right"
             mobile-break-point="600"
-
             dark>
         <v-img :aspect-ratio="16/9" :src="theme_style.navigation.panel.bg_img" style="margin-bottom: 5px">
             <v-list dense nav class="py-0">
@@ -156,8 +155,7 @@
             },
             getNews(){
                 let value = getCookie('news');
-                if (value === "Yes") return true;
-                else return false;
+                return value === "Yes";
             },
             getIndexCurrentPage(url){
                 const pages = url.split('/');
